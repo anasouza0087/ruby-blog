@@ -1,0 +1,25 @@
+<h1>Posts</h1>
+
+<div id="posts">
+    <div style="margin-bottom: 20px">
+     <a href="/posts/new">
+        <button>Novo Post</button>
+      </a>
+    </div>
+  <% @posts.each do |post| %>
+    <div>
+      <a href="/posts/<%= post.id %>">
+        <%= post.title %>
+      </a>
+      <p><%= post.text %></p>
+    </div>
+
+  <% end %>
+</div>
+
+
+
+
+
+
+
