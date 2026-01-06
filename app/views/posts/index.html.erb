@@ -7,11 +7,20 @@
       </a>
     </div>
   <% @posts.each do |post| %>
-    <div>
+    <div style="display: flex, flexDirection: row">
+      <div>
       <a href="/posts/<%= post.id %>">
         <%= post.title %>
       </a>
       <p><%= post.text %></p>
+      </div>
+      <a href="/posts/<%= post.id %>/edit">
+      <button style="margin-bottom: 20px">Editar</button>
+    </a>
+    <%= button_to "Excluir", post,
+      method: :delete,
+      data: { turbo_confirm: "Are you sure?" },
+      style: "margin-bottom: 20px" %>
     </div>
 
   <% end %>
