@@ -1,71 +1,58 @@
 
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy]
+  protect_from_forgery with: :null_session
 
-  def index
-    @posts = Post.all
+def index
+  Rails.logger.info "PARAMS 👉 #{params.to_unsafe_h}"
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @posts }
-    end
+  posts = Post.all
+
+  if params[:id].present?
+    posts = posts.where(id: params[:id])
+  elsif params[:filter]&.[](:id).present?
+    posts = posts.where(id: params[:filter][:id])
   end
 
-  def show
-    respond_to do |format|
-      format.html
-      format.json { render json: @post }
-    end
-  end
+  render json: posts
+end
 
-  def new
+def show
+    render json: @post
+end
+
+def new
     @post = Post.new
+end
+
+def create
+  @post = Post.new(post_params)
+  render json: @post
+end
+
+def edit; end
+
+def update
+  if(@post.update(post_params))
+    render json: @post
+  else
+    render json: { errors: @post.errors }, status: :unprocessable_entity
   end
+end
 
-  def create
-    @post = Post.new(post_params)
+def destroy
+  @post.destroy
+  head :no_content
+end
 
-    respond_to do |format|
-      if @post.save
-        format.html { redirect_to @post, notice: "Post created successfully" }
-        format.json { render json: @post, status: :created }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: { errors: @post.errors }, status: :unprocessable_entity }
-      end
-    end
-  end
 
-  def edit; end
+private
 
-  def update
-    respond_to do |format|
-      if @post.update(post_params)
-        format.html { redirect_to @post, notice: "Post updated successfully" }
-        format.json { render json: @post }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: { errors: @post.errors }, status: :unprocessable_entity }
-      end
-    end
-  end
+def set_post
+  @post = Post.find(params[:id])
+end
 
-  def destroy
-    @post.destroy
-
-    respond_to do |format|
-      format.html { redirect_to posts_path, notice: "Post deleted successfully" }
-      format.json { head :no_content }
-    end
-  end
-
-  private
-
-  def set_post
-    @post = Post.find(params[:id])
-  end
-
-  def post_params
-    params.require(:post).permit(:title, :text)
+def post_params
+  params.require(:post).permit(:title, :text, :user, :theme)
   end
 end
