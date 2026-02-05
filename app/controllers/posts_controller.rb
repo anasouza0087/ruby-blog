@@ -6,12 +6,12 @@ class PostsController < ApplicationController
 def index
   Rails.logger.info "PARAMS 👉 #{params.to_unsafe_h}"
 
-  posts = Post.all
+  posts = Post.all.order(id: :desc)
 
   if params[:id].present?
     posts = posts.where(id: params[:id])
-  elsif params[:filter]&.[](:id).present?
-    posts = posts.where(id: params[:filter][:id])
+  elsif params[:theme].present?
+    posts = posts.where(theme: params[:theme])
   end
 
   render json: posts
@@ -27,8 +27,14 @@ end
 
 def create
   @post = Post.new(post_params)
-  render json: @post
+
+  if @post.save
+    render json: @post, status: :created
+  else
+    render json: { errors: @post.errors.full_messages }, status: :unprocessable_entity
+  end
 end
+
 
 def edit; end
 
