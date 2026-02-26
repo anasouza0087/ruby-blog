@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   # get "/posts", to: "posts#index"
 
   # get "/posts/new", to: "posts#new"

@@ -1,0 +1,208 @@
+openapi: 3.0.1
+info:
+  title: Blog API
+  version: v1
+  description: API RESTful de blog para estudo
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /posts:
+    get:
+      summary: Lista todos os posts
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: query
+          schema:
+            type: integer
+          description: Filtrar por ID do post
+        - name: theme
+          in: query
+          schema:
+            type: string
+          description: Filtrar por tema
+      responses:
+        '200':
+          description: Lista de posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      summary: Cria um novo post
+      tags:
+        - Posts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '201':
+          description: Post criado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '422':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /posts/{id}:
+    get:
+      summary: Mostra um post específico
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post não encontrado
+    put:
+      summary: Atualiza um post
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Post atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '422':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Post não encontrado
+    patch:
+      summary: Atualiza parcialmente um post
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+      responses:
+        '200':
+          description: Post atualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '422':
+          description: Erro de validação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Post não encontrado
+    delete:
+      summary: Deleta um post
+      tags:
+        - Posts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Post deletado
+        '404':
+          description: Post não encontrado
+
+components:
+  schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        text:
+          type: string
+        user:
+          type: string
+        theme:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - text
+        - user
+        - theme
+        - created_at
+        - updated_at
+    PostInput:
+      type: object
+      properties:
+        title:
+          type: string
+        text:
+          type: string
+        user:
+          type: string
+        theme:
+          type: string
+      required:
+        - title
+        - text
+        - user
+        - theme
+    Error:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
