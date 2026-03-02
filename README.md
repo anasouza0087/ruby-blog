@@ -1,24 +1,54 @@
-# README
+# Blog
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Aplicação Ruby on Rails simples para gerenciamento de posts, construída com
+Rails 8 e Hotwire. O projeto é compatível com container e inclui interface de
+documentação de API via Swagger.
 
-Things you may want to cover:
+## 🚀 Tecnologias principais
 
-* Ruby version
+- Ruby 3.2.2
+- Rails 8.1.1
+- Hotwire (Turbo + Stimulus)
+- SQLite3 (padrão para desenvolvimento/teste/produção)
+- Servidor web Puma
+- Docker (builds multi-stage + Kamal)
+- Rswag para documentação da API
 
-* System dependencies
+## 🛠️ Pré-requisitos
 
-* Configuration
+- Ruby 3.2.2 (especificado em `.ruby-version` / `mise.toml`)
+- Bundler
+- SQLite3 (dev/test, já incluso na base Docker)
+- Docker e Kamal (para deploy em contêiner)
 
-* Database creation
+## ⚙️ Configuração do ambiente
 
-* Database initialization
+```bash
+# instale as gems
+bundle install
 
-* How to run the test suite
+# crie e migre o banco de dados
+bin/rails db:create db:migrate
 
-* Services (job queues, cache servers, search engines, etc.)
+# opcional: carregue dados de seed
+bin/rails db:seed
+```
 
-* Deployment instructions
+### Rodando em desenvolvimento
 
-* ...
+```bash
+bin/rails server               # http://localhost:3000
+```
+
+## 📁 Estrutura resumida
+
+- `app/` → código MVC (models, controllers, views)
+- `config/` → rotas, inicializadores, ambiente
+- `db/` → migrações e esquemas
+
+## 🔧 Observações
+
+- CORS habilitado para `http://localhost:5173` (frontend separado)
+- Documentação da API disponível em `/api-docs` (ex: http://localhost:3000/api-docs)
+- Dependências de desenvolvimento incluem Brakeman, Bundler Audit e
+  RuboCop para análise estática
