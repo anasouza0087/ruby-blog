@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  mount Rswag::Ui::Engine => '/api-docs'
+ if Rails.env.development? || Rails.env.test?
   mount Rswag::Api::Engine => '/api-docs'
+  mount Rswag::Ui::Engine => '/api-docs'
+end
   # get "/posts", to: "posts#index"
 
   # get "/posts/new", to: "posts#new"
