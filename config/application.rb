@@ -1,6 +1,17 @@
 require_relative "boot"
 
-require "rails/all"
+require "rails"
+
+require "active_model/railtie"
+require "active_record/railtie"
+require "action_controller/railtie"
+require "action_view/railtie"
+require "action_mailer/railtie"
+# require "action_cable/engine"  # DESATIVADO
+# require "active_storage/engine" # DESATIVADO
+# require "action_mailbox/engine"
+# require "action_text/engine"
+# require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -10,6 +21,7 @@ module Blog
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.1
+    config.api_only = true
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
